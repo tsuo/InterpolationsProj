@@ -1,5 +1,8 @@
 # sinSmoothings
-Convert any scatter plot to smooth (sine) wave patterns.
+Convert any scatter plot to smooth wave patterns.
+
+This method is also called ***SINE/COSINE INTERPOLATION***
+
 
 ---
 
