@@ -1,5 +1,5 @@
 # sinSmoothings
-Convert any scatter plots to smooth (sine) wave patterns.
+Convert any scatter plot to smooth (sine) wave patterns.
 
 ---
 
