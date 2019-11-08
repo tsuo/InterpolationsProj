@@ -4,10 +4,7 @@
 
 #include "random.h"
 #include "release/sinemapping.c"
-
-
-///// 
-// test for sinemapping.c
+#include "interpolation.h"
 
 int main(int argc, char **argv)
 {	
@@ -30,19 +27,51 @@ int main(int argc, char **argv)
 
 	srand(seed);
 	
-	double *vals;
-	double *smooth;		
+	double vals[len];
+	double smooth[lens];
+	//double *vals;
+	//double *smooth;		
 
 	printf("\n\n");
 	printf("[ARGUMENTS]\nSmooth File: %s\nPlot File: %s\nSeed: %d\nPlot Length: %d\n" 
 				"Muliplier: %d\nSmooth Length: %d\nMax Y: %f\n\n", 
 				argv[1], argv[2], seed, len, mult, lens, ymax);	
 
+	int i;
 	printf("Start sine mapping...\n");
-	sine_map(&vals, &smooth, len, mult, ymax);
+	
+	///random values	
+	for(i = 0; i < len; i++)
+	{
+		vals[i] = randi(ymax);
+	}
+
+	NOISE_TYPE = NOISE_COSINE;
+
+	for(i = 0; i < lens; i++)
+	{
+		smooth[i] = noise(vals, len, i/mult, (double)(i%mult)/(double)mult);
+	}
+	
+	/*
+	double x;
+	double v1;
+	double v2;
+	for(i = 0; i < lens; i++)
+	{
+		x = (double)(i%mult) / (double)mult;
+		
+		v1 = vals[i/(mult)];
+		v2 = vals[(i/mult + 1) % len];
+		
+		smooth[i] = interpolate_cosine(v1, v2, x);
+		//printf("val:%f + %f\n", interpolate_cosine(v1, v2, x), v1);
+	}
+	*/
+	//sine_map(&vals, &smooth, len, mult, ymax);
 	printf("..End sine mapping!\n\n");	
 
-	int i;
+	//int i;
 	printf("Printing to Files...\n");
 	for(i = 0; i < lens; i++)
 	{
@@ -56,8 +85,8 @@ int main(int argc, char **argv)
 
 	fclose(f);
 	fclose(f2);
-	free(smooth);
-	free(vals);
+	//free(smooth);
+	//free(vals);
 
 	printf("\nDone\n");
 

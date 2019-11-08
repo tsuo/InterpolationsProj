@@ -3,5 +3,5 @@ set output 'plot.png'
 
 set xlabel 'x'
 set ylabel 'y'
-set title 'Smoothing'
+set title 'Scatter Plot'
 plot "plot.txt" using 1:2 with points pointtype 5
