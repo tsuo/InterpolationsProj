@@ -7,6 +7,7 @@
 #define NOISE_HERMITE 	3
 
 #include <math.h>
+#include <stdio.h>
 
 int NOISE_TYPE = 0;
 
@@ -69,6 +70,8 @@ double noise(double *vals, int len, int index, double x)
 	v1 = vals[index];
 	v2 = vals[(index + 1)%len];
 	v3 = vals[(index + 2)%len];
+
+	//fprintf(stdout, "vals: %f, %f, %f, %f\n", v0, v1, v2, v3);
 
 	if(NOISE_TYPE == NOISE_LINEAR)
 	{
