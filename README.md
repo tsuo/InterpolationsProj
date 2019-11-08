@@ -1,18 +1,36 @@
-# sinSmoothings
-Convert any scatter plot to smooth wave patterns.
-
-This method is also called ***SINE/COSINE INTERPOLATION***
-
+# INTERPOLATIONS
 
 ---
 
 ### Example Scatter-Plot:
 ![scatter](smoothingsin/plot.png)
 
+__TASK:__
+
+Being able to interpolate points in any scatter plot.
+
 ---
 
-### Output sine Smoothing:
+# NAIVE SINE IMPLEMENTATION: 
+
+__Found in sinemapping.c__
+
+### Output (naive) SINE:
 
 ![smooth](smoothingsin/smooth.png)
 
 ---
+
+### Output COSINE:
+
+![smooth](.png)
+
+
+---
+
+### Output CUBIC:
+
+![smooth](smoothingsin/smooth.png)
+
+---
+
