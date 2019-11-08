@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 		vals[i] = randi(ymax);
 	}
 
-	NOISE_TYPE = NOISE_COSINE;
+	NOISE_TYPE = NOISE_CUBIC;
 
 	for(i = 0; i < lens; i++)
 	{
