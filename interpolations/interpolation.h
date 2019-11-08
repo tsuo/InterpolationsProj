@@ -17,6 +17,11 @@ int NOISE_TYPE = 0;
 //
 // values of x are between 0 and 1 inclusive
 
+int pmod(int a, int b)
+{
+	return ((a%b) + b) % b;
+}
+
 double interpolate_linear(double v1, double v2, double x)
 {
 	return v1*(1-x) + v2*x;
@@ -72,10 +77,10 @@ double noise(double *vals, int len, int index, double x)
 	if(index >= len || len < 4) return -1;
 
 	double v0, v1, v2, v3;	
-	v0 = vals[(index - 1)%len];	
+	v0 = vals[pmod((index - 1), len)];	
 	v1 = vals[index];
-	v2 = vals[(index + 1)%len];
-	v3 = vals[(index + 2)%len];
+	v2 = vals[pmod((index + 1), len)];
+	v3 = vals[pmod((index + 2), len)];
 
 	//fprintf(stdout, "vals: %d, %d, %f\n%f, %f, %f, %f\n", len, index, x, v0, v1, v2, v3);
 
@@ -99,5 +104,62 @@ double noise(double *vals, int len, int index, double x)
 		return interpolate_hermite(v0, v1, v2, v3, x, tension, bias);
 	}
 }
+
+
+////////////////
+/// generate 2D noise:
+/// args: [random Array]  [array width]  [array height]  [1D array index]  [0.0 to 1.0] [0.0 to 1.0]
+double noise2D(double *vals, int width, int height, int index, double x, double y)
+{
+	int len = width * height;
+	if(index >= len || len < 4) return -1;
+
+	double va0, va1, va2, va3;
+	double vb0, vb1, vb2, vb3;
+	int windex = index%width;
+	int hindex = index/width;
+
+	va0 = vals[(pmod((windex - 1), width) + width*hindex)];	
+	va1 = vals[index];
+	va2 = vals[(pmod((windex + 1), width) + width*hindex)];
+	va3 = vals[(pmod((windex + 2), width) + width*hindex)];
+
+
+	vb0 = vals[((pmod((hindex - 1), height)*width) + windex)];	
+	vb1 = vals[index];
+	vb2 = vals[((pmod((hindex + 1), height)*width) + windex)];
+	vb3 = vals[((pmod((hindex + 2), height)*width) + windex)];
+
+
+	printf("ARGS 1: %d, %d, %d, %.3f, %.3f\n", width, height, index, x, y);
+	printf("ARGS 2: %d, %d, %d, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f\n\n",
+			len, windex, hindex, va0, va1, va2, va3, vb0, vb1, vb2, vb3);
+
+
+	/*
+	//fprintf(stdout, "vals: %d, %d, %f\n%f, %f, %f, %f\n", len, index, x, v0, v1, v2, v3);
+
+	if(NOISE_TYPE == NOISE_LINEAR)
+	{
+		return interpolate_linear(v1, v2, x);
+	}
+	else if(NOISE_TYPE == NOISE_COSINE)
+	{
+		return interpolate_cosine(v1, v2, x);
+	}
+	else if(NOISE_TYPE == NOISE_CUBIC)
+	{
+		//printf("vals: %f, %f, %f, %f, %f\n", x, v0, v1, v2, v3);
+		return interpolate_cubic(v0, v1, v2, v3, x);
+	}
+	else if(NOISE_TYPE == NOISE_HERMITE)
+	{
+		double tension = -1;
+		double bias = 0.2;
+		return interpolate_hermite(v0, v1, v2, v3, x, tension, bias);
+	}
+	*/
+}
+
 
 #endif //H_INTERP

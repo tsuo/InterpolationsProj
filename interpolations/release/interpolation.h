@@ -7,6 +7,7 @@
 #define NOISE_HERMITE 	3
 
 #include <math.h>
+#include <stdio.h>
 
 int NOISE_TYPE = 0;
 
@@ -34,8 +35,12 @@ double interpolate_cubic(double v0, double v1, double v2, double v3, double x)
 	double a1 = v0 - v1 - a0;
 	double a2 = v2 - v0;
 	double a3 = v1;
-		
-	return (a0*x*x2 + a1*x2 + a2*x*a3);
+	//printf("vals: %f, %f, %f, %f, %f\n", x, v0, v1, v2, v3);
+
+	//printf("vals: %f, %f, %f, %f, %f\n", x2, a0, a1, a2, a3);	
+	//printf("vals: %f, %f, %f\n\n", a0*x*x2, a1*x2, a2*x*a3);	
+
+	return (a0*x*x2 + a1*x2 + a2*x + a3);
 }
 
 /// tension and bias between -1 and 1
@@ -55,6 +60,8 @@ double interpolate_hermite(double v0, double v1, double v2, double v3,
 	double a1 = x3 - 2*x2 + x;
 	double a2 = x3 - x2;
 	double a3 = -2*x3 + 3*x2;
+
+	return (a0*v1 + a1*x0 + a2*x1 + a3*v2);
 }
 
 ////////////////
@@ -70,6 +77,8 @@ double noise(double *vals, int len, int index, double x)
 	v2 = vals[(index + 1)%len];
 	v3 = vals[(index + 2)%len];
 
+	//fprintf(stdout, "vals: %d, %d, %f\n%f, %f, %f, %f\n", len, index, x, v0, v1, v2, v3);
+
 	if(NOISE_TYPE == NOISE_LINEAR)
 	{
 		return interpolate_linear(v1, v2, x);
@@ -80,12 +89,13 @@ double noise(double *vals, int len, int index, double x)
 	}
 	else if(NOISE_TYPE == NOISE_CUBIC)
 	{
+		//printf("vals: %f, %f, %f, %f, %f\n", x, v0, v1, v2, v3);
 		return interpolate_cubic(v0, v1, v2, v3, x);
 	}
 	else if(NOISE_TYPE == NOISE_HERMITE)
 	{
-		double tension = 0;
-		double bias = 0;
+		double tension = -1;
+		double bias = 0.2;
 		return interpolate_hermite(v0, v1, v2, v3, x, tension, bias);
 	}
 }

@@ -6,6 +6,10 @@
 #include "release/sinemapping.c"
 #include "interpolation.h"
 
+////
+// continue working on interpolation.h function noise2D
+
+
 int main(int argc, char **argv)
 {	
 	if(argc < 7){
@@ -38,7 +42,7 @@ int main(int argc, char **argv)
 				argv[1], argv[2], seed, len, mult, lens, ymax);	
 
 	int i;
-	printf("Start sine mapping...\n");
+	printf("Start interpolation...\n");
 	
 	///random values	
 	for(i = 0; i < len; i++)
@@ -46,13 +50,41 @@ int main(int argc, char **argv)
 		vals[i] = randi(ymax);
 	}
 
-	NOISE_TYPE = NOISE_CUBIC;
+	NOISE_TYPE = NOISE_COSINE;
 
-	for(i = 0; i < lens; i++)
+	//for(i = 0; i < lens; i++)
+	//{
+	//	smooth[i] = noise(vals, len, i/mult, (double)(i%mult)/(double)mult);
+	//}
+
+	int width = 5;
+	int height = 5;	
+	int mult2d = 4;
+	int swidth = width * mult2d;
+	int sheight = height * mult2d;
+	double vals2d[height*width];
+	double smooth2d[height*mult2d * width*mult2d];
+	int y,x;	
+	for(y = 0; y < height; y++)
 	{
-		smooth[i] = noise(vals, len, i/mult, (double)(i%mult)/(double)mult);
+		for(x = 0; x < width; x++)
+		{
+			vals2d[y*width + x] = randi(ymax);
+			printf("val[%d]: %f\n", y*width + x, vals2d[y*width+x]);
+		}
 	}
 	
+	for(y = 0; y < sheight; y++)
+	{
+		for(x = 0; x < swidth; x++)
+		{
+			smooth2d[y*swidth + x] = noise2D(vals2d, width, height, y*swidth + x,
+							(double)(x%mult2d)/(double)mult2d,
+							(double)(y%mult2d)/(double)mult2d);
+		}
+	}
+	
+
 	/*
 	double x;
 	double v1;
@@ -69,8 +101,9 @@ int main(int argc, char **argv)
 	}
 	*/
 	//sine_map(&vals, &smooth, len, mult, ymax);
-	printf("..End sine mapping!\n\n");	
+	printf("..End interpolation!\n\n");	
 
+	/*
 	//int i;
 	printf("Printing to Files...\n");
 	for(i = 0; i < lens; i++)
@@ -82,6 +115,7 @@ int main(int argc, char **argv)
 		fprintf(f2, "%d\t%f\n", i, vals[i]);
 	}
 	printf("...Finished Printing to File!\n\n");
+	*/
 
 	fclose(f);
 	fclose(f2);
