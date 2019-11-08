@@ -11,9 +11,13 @@ Being able to interpolate points in any scatter plot.
 
 ---
 
-# NAIVE SINE IMPLEMENTATION: 
+---
+
+### NAIVE SINE IMPLEMENTATION: 
 
 __Found in sinemapping.c__
+
+---
 
 ---
 
@@ -24,9 +28,13 @@ __Found in sinemapping.c__
 
 ---
 
+---
+
 ### Output CUBIC:
 
 ![cubic](smoothingsin/smootho.png)
+
+---
 
 ---
 
