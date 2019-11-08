@@ -32,7 +32,7 @@ __Found in sinemapping.c__
 
 ### Output CUBIC:
 
-![cubic](smoothingsin/smootho.png)
+![cubic](interpolations/smootho.png)
 
 ---
 
